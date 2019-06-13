@@ -1,19 +1,37 @@
 import React from 'react';
 import axios from "axios";
-import { Form, Header, } from "semantic-ui-react";
+import { Form, Header, Icon } from "semantic-ui-react";
 
 class DepartmentsForm extends React.Component {
   defaultValues = { name: "", description: "",};
   state = { ...this.defaultValues, };
 
+  componentDidMount() {
+    const { id } = this.props.match.params;
+    if (id) 
+    axios.get(`/api/departments/${id} `)
+    .then(res => {
+      const { name, description } = res.data;
+      this.setState({ name, description })
+    })
+  }
+
   handleSubmit = (e) => {
     e.preventDefault();
     const department = { ...this.state, };
-    axios.post("/api/departments", department)
+    const { id } = this.props.match.params;
+    if (id) {
+      axios.put(`/api/departments/${id}`, department)
+      .then(res => {
+        this.props.history.push(`/departments/${id}`)
+      })
+    } else {
+      axios.post("/api/departments", department)
       .then( res => {
         this.props.history.push("/departments");
       })
-    this.setState({ ...this.defaultValues, });
+      this.setState({ ...this.defaultValues, });
+    }
   }
 
   handleChange = (e, { name, value, }) =>
@@ -21,11 +39,14 @@ class DepartmentsForm extends React.Component {
   
 
   render() {
-    // const { name, price, description, department, } = this.state;
-
+    const { id } = this.props.match.params;
     return (
       <div>
-        <Header as="h1">New Dept.</Header>
+        { id ? 
+       <Header as='h1'>Edit Dept.</Header>
+      : <Header as="h1">New Dept.</Header>
+      } 
+      {/* Harlan Helped with this logic, thanks pal! ^^^ */}
         <Form onSubmit={this.handleSubmit}>
           <Form.Group widths="equal">
             <Form.Input
@@ -45,6 +66,14 @@ class DepartmentsForm extends React.Component {
             />
           </Form.Group>
           <Form.Button color="blue">Submit</Form.Button>
+          <Form.Button 
+          color="black" 
+          size="tiny"
+          onClick={this.props.history.goBack}
+        >
+          BACK
+          <Icon name="arrow left" />
+        </Form.Button>
         </Form>
       </div>
     )

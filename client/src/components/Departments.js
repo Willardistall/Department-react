@@ -11,7 +11,6 @@ const Departments = (props) => {
     .then( res => {
       setDepartments (res.data);
     })
-
   }, []);
 
   const  renderDepartments = () => {
