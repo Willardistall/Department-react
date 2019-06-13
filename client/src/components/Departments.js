@@ -2,6 +2,8 @@ import React, { useState, useEffect, } from "react";
 import axios from "axios";
 import { Link, } from "react-router-dom";
 import { Button, Card, Header, } from "semantic-ui-react";
+import HeaderText from './styles/HeaderText';
+import styled, { keyframe } from 'styled-components';
 
 const Departments = (props) => {
   const [departments, setDepartments] = useState([]);
@@ -15,11 +17,11 @@ const Departments = (props) => {
 
   const  renderDepartments = () => {
     if (departments.length <= 0)
-      return <Header as="h2">No Departments</Header>
+      return <Header as={HeaderText} fSize='large'>No Departments</Header>
     return departments.map( department => (
       <Card key= { department.id} >
         <Card.Content>
-          <Card.Header>{ department.name }</Card.Header>
+          <Card.Header as={HeaderText} fSize='large'>{ department.name }</Card.Header>
           <Card.Description>
           { department.description }
           </Card.Description>

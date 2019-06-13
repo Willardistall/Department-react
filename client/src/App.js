@@ -9,6 +9,8 @@ import DepartmentView from './components/DepartmentView';
 import NoMatch from './components/NoMatch';
 import { Container, } from "semantic-ui-react";
 
+
+
 const App = () => (
   <>
   <Navbar />
